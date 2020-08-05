@@ -1,0 +1,8 @@
+coursera-algorithms-part2.iml
+week1/wordnet/*
+week1/.lift/*
+!week1/wordnet/Makefile 
+!week1/wordnet/WordNet.java 
+!week1/wordnet/SAP.java 
+!week1/wordnet/Outcast.java
+
