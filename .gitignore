@@ -1,8 +1,18 @@
+algs4.jar
 coursera-algorithms-part2.iml
+
 week1/wordnet/*
 week1/.lift/*
 !week1/wordnet/Makefile 
 !week1/wordnet/WordNet.java 
 !week1/wordnet/SAP.java 
 !week1/wordnet/Outcast.java
+
+week2/seam/*
+week2/.lift/*
+!week2/seam/Makefile 
+!week2/seam/SeamCarver.java
+!week2/seam/HorizontalSeamAcyclicSP.java
+!week2/seam/VerticalSeamAcyclicSP.java
+!week2/seam/Point.java
 
