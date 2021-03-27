@@ -6,10 +6,8 @@ import edu.princeton.cs.algs4.In;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class BaseballElimination {
     private final int numTeams;
@@ -18,8 +16,8 @@ public class BaseballElimination {
     private final int[] wins;
     private final int[] loses;
     private final int[] remaining;
-    // unique pair of team1 vs team2 pair to number of games left to play
-    private final Map<Set<Integer>, Integer> uniqueGames;
+    private final int[][] games;
+
     private final List<List<Integer>> certificates;
     private final Map<Integer, Boolean> eliminatedCache;
 
@@ -33,7 +31,7 @@ public class BaseballElimination {
         wins = new int[numTeams];
         loses = new int[numTeams];
         remaining = new int[numTeams];
-        uniqueGames = new HashMap<>();
+        games = new int[numTeams][numTeams];
         certificates = new ArrayList<>(numTeams);
         for (int i = 0; i < numTeams; i++) {
             certificates.add(null);
@@ -49,10 +47,7 @@ public class BaseballElimination {
             loses[i] = in.readInt();
             remaining[i] = in.readInt();
             for (int j = 0; j < numTeams; j++) {
-                int gamesLeft = in.readInt();
-                if (i != j) {
-                    uniqueGames.put(new HashSet<>(Arrays.asList(i, j)), gamesLeft);
-                }
+                games[i][j] = in.readInt();
             }
         }
     }
@@ -103,7 +98,7 @@ public class BaseballElimination {
         int i = teamNumbers.get(team1);
         int j = teamNumbers.get(team2);
 
-        return uniqueGames.get(new HashSet<>(Arrays.asList(i, j)));
+        return games[i][j];
     }
 
     // is given team eliminated?
@@ -118,18 +113,24 @@ public class BaseballElimination {
 
         // 1 for source + 1 for sink + number of teams - 1 for given team
         int numVertices = 2 + numTeams - 1;
-
         // number of games without given team
         int numGames = 0;
-        for (Map.Entry<Set<Integer>, Integer> game : uniqueGames.entrySet()) {
-            // skip games with x team
-            if (game.getKey().contains(x)) {
-                continue;
-            }
 
-            numGames++;
-            // add vertex for each game without given team
-            numVertices++;
+        boolean[][] uniqueGames = new boolean[numTeams][numTeams];
+        for (int i = 0; i < numTeams; i++) {
+            for (int j = 0; j < numTeams; j++) {
+                if (i == j || i == x || j == x) {
+                    continue;
+                }
+                if (uniqueGames[i][j] || uniqueGames[j][i]) {
+                    continue;
+                }
+                uniqueGames[i][j] = true;
+
+                numGames++;
+                // add vertex for each game without given team
+                numVertices++;
+            }
         }
 
         FlowNetwork flowNetwork = new FlowNetwork(numVertices);
@@ -167,23 +168,30 @@ public class BaseballElimination {
         int totalGamesLeft = 0;
 
         int gameVertex = 1;
-        for (Map.Entry<Set<Integer>, Integer> game : uniqueGames.entrySet()) {
-            // skip games with x team
-            if (game.getKey().contains(x)) {
-                continue;
-            }
+        for (int i = 0; i < numTeams; i++) {
+            for (int j = 0; j < numTeams; j++) {
+                if (i == j || i == x || j == x) {
+                    continue;
+                }
+                if (uniqueGames[i][j]) {
+                    uniqueGames[i][j] = false;
+                } else if (uniqueGames[j][i]) {
+                    uniqueGames[j][i] = false;
+                } else {
+                    continue;
+                }
 
-            totalGamesLeft += game.getValue();
+                totalGamesLeft += games[i][j];
 
-            // add edge from source to game vertex with games left as a capacity
-            flowNetwork.addEdge(new FlowEdge(0, gameVertex, game.getValue()));
+                // add edge from source to game vertex with games left as a capacity
+                flowNetwork.addEdge(new FlowEdge(0, gameVertex, games[i][j]));
 
-            // add edges from game to teams participating in it
-            for (int i : game.getKey()) {
+                // add edges from game to teams participating in it
                 flowNetwork.addEdge(new FlowEdge(gameVertex, teamVertices[i], Double.POSITIVE_INFINITY));
-            }
+                flowNetwork.addEdge(new FlowEdge(gameVertex, teamVertices[j], Double.POSITIVE_INFINITY));
 
-            gameVertex++;
+                gameVertex++;
+            }
         }
 
         FordFulkerson maxFlow = new FordFulkerson(flowNetwork, 0, numVertices - 1);
@@ -232,9 +240,6 @@ public class BaseballElimination {
     }
 
     public static void main(String[] args) {
-        BaseballElimination division = new BaseballElimination(args[0]);
-        // System.out.println(division.isEliminated("Philadelphia"));
-        // System.out.println(division.certificateOfElimination("Philadelphia"));
-        System.out.println(division.against("Atlanta", "Atlanta"));
+        // empty
     }
 }
