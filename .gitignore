@@ -16,3 +16,8 @@ week2/.lift/*
 !week2/seam/VerticalSeamAcyclicSP.java
 !week2/seam/Point.java
 
+week3/baseball/*
+week3/.lift/*
+!week3/baseball/Makefile
+!week3/baseball/BaseballElimination.java
+
