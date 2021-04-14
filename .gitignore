@@ -21,3 +21,9 @@ week3/.lift/*
 !week3/baseball/Makefile
 !week3/baseball/BaseballElimination.java
 
+week4/boggle/*
+week4/.lift/*
+!week4/boggle/Makefile
+!week4/boggle/BoggleSolver.java
+!week4/boggle/Trie.java
+
