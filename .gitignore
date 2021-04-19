@@ -2,14 +2,12 @@ algs4.jar
 coursera-algorithms-part2.iml
 
 week1/wordnet/*
-week1/.lift/*
 !week1/wordnet/Makefile 
 !week1/wordnet/WordNet.java 
 !week1/wordnet/SAP.java 
 !week1/wordnet/Outcast.java
 
 week2/seam/*
-week2/.lift/*
 !week2/seam/Makefile 
 !week2/seam/SeamCarver.java
 !week2/seam/HorizontalSeamAcyclicSP.java
@@ -17,13 +15,17 @@ week2/.lift/*
 !week2/seam/Point.java
 
 week3/baseball/*
-week3/.lift/*
 !week3/baseball/Makefile
 !week3/baseball/BaseballElimination.java
 
 week4/boggle/*
-week4/.lift/*
 !week4/boggle/Makefile
 !week4/boggle/BoggleSolver.java
 !week4/boggle/Trie.java
+
+week5/burrows/*
+!week5/burrows/Makefile
+!week5/burrows/BurrowsWheeler.java	
+!week5/burrows/MoveToFront.java
+!week5/burrows/CircularSuffixArray.java
 
