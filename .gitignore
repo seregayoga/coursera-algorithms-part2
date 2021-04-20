@@ -25,7 +25,7 @@ week4/boggle/*
 
 week5/burrows/*
 !week5/burrows/Makefile
-!week5/burrows/BurrowsWheeler.java	
+!week5/burrows/BurrowsWheeler.java
 !week5/burrows/MoveToFront.java
 !week5/burrows/CircularSuffixArray.java
 
